@@ -11,6 +11,7 @@ public class Menu : MonoBehaviour
     }
     public void Play()
     {
+        Time.timeScale = 1;
         SceneManager.LoadSceneAsync(0);
     }
     public void ExitGame()

@@ -7,6 +7,10 @@ public class MenuRespawn : MonoBehaviour
 {
     public PlayerManager manager;
     public GameObject respawnMenu;
+    public GameObject player;
+    public GameObject startPoint;
+
+    private string currentScene;
     
     public void OnRespawnButton()
     {
@@ -18,7 +22,9 @@ public class MenuRespawn : MonoBehaviour
     
     public void OnMenuButton()
     {
+        //manager.ResetGame();
         respawnMenu.SetActive(false);
+        
         SceneManager.LoadSceneAsync(2);
     }
 }

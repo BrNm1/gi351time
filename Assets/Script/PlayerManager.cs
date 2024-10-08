@@ -17,15 +17,20 @@ public class PlayerManager : MonoBehaviour
     public AudioClip playerHitSound;
     public AudioClip playerWarpSound;
     public int currentHealth;
+    public GameObject startPoint;
+    public GameObject HPbar;
+    public GameObject BGsound;
     
     private static PlayerManager instance;
     private string currentScene;
     private bool isLoading = false;
-    private Vector3 savePoint;
+    public Vector3 savePoint;
+    private Vector3 startPosition;
     private bool powerOfTime = false;
     private bool acOne = false;
     private bool stopLoading = false;
     private AudioSource audioSource;
+    private bool newGame = false;
 
     void Awake()
     {
@@ -51,17 +56,13 @@ public class PlayerManager : MonoBehaviour
         UIAC1.SetActive(false);
         UIAC2.SetActive(false);
         audioSource = GetComponent<AudioSource>();
+        startPosition = startPoint.transform.position;
     }
     
     void Update()
     {
         CheckCurrentScene(); // เช็ค scene ทุกครั้งใน Update
         SomeFunction();
-        if (Input.GetKey(KeyCode.X))
-        {
-            TakeDamage(1);
-        }
-
         if (powerOfTime && !acOne)
         {
             if (Input.GetKey(KeyCode.G))
@@ -70,6 +71,26 @@ public class PlayerManager : MonoBehaviour
                 Time.timeScale = 1;
             }
         }
+
+        if (currentScene == "Menu" || currentScene == "Win")
+        {
+            HPbar.SetActive(false);
+            BGsound.SetActive(false);
+            
+            ResetGame();
+            
+            newGame = true;
+        }
+
+        if (currentScene == "Game1" && newGame)
+        {
+            HPbar.SetActive(true);
+            BGsound.SetActive(true);
+            
+            newGame = false;
+        }
+        
+        Debug.Log(lives);
     }
 
     private void CheckCurrentScene()
@@ -125,6 +146,15 @@ public class PlayerManager : MonoBehaviour
         UIAC2.SetActive(false);
         isLoading = false;
     }
+
+    public void DestroyPlayer()
+    {
+        if (instance != null)
+        {
+            Destroy(instance.gameObject);
+            instance = null;
+        }
+    }
     
     public void TakeDamage(int damage)
     {
@@ -149,7 +179,7 @@ public class PlayerManager : MonoBehaviour
         else
         {
             ShowRespawnUI();
-            Debug.Log("Game Over");
+            lives = 0;
         }
         UpdateUI();
     }
@@ -187,14 +217,17 @@ public class PlayerManager : MonoBehaviour
         Debug.Log("Save point set at: " + savePoint);
     }
     
-    public void OnRespawnButton()
-    {
-        Respawn();
-    }
-    
     public void OnMenuButton()
     {
         SceneManager.LoadScene("MainMenu");
+    }
+    
+    public void ResetGame()
+    {
+        lives = 3;
+        currentHealth = maxHealth;
+        transform.position = startPosition;
+        UpdateUI();
     }
     
     private void OnTriggerEnter2D(Collider2D other)
