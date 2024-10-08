@@ -25,6 +25,6 @@ public class MenuRespawn : MonoBehaviour
         //manager.ResetGame();
         respawnMenu.SetActive(false);
         
-        SceneManager.LoadSceneAsync(2);
+        SceneManager.LoadSceneAsync(0);
     }
 }

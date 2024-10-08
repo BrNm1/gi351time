@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     public GameObject startPoint;
     public GameObject HPbar;
     public GameObject BGsound;
+    public Text UIrespawnText;
     
     private static PlayerManager instance;
     private string currentScene;
@@ -118,14 +119,14 @@ public class PlayerManager : MonoBehaviour
             {
                 if (Input.GetKey(KeyCode.G))
                 {
-                    StartCoroutine(LoadSceneWithDelay(1, 3f)); // หน่วงเวลา 1 วินาที
+                    StartCoroutine(LoadSceneWithDelay(2, 3f)); // หน่วงเวลา 1 วินาที
                 }
             }
             else if (playerManager.IsInGame2())
             {
                 if (Input.GetKey(KeyCode.G) && !isLoading)
                 {
-                    StartCoroutine(LoadSceneWithDelay(0, 3f)); // หน่วงเวลา 1 วินาที
+                    StartCoroutine(LoadSceneWithDelay(1, 3f)); // หน่วงเวลา 1 วินาที
                 }
             }
         }
@@ -175,10 +176,12 @@ public class PlayerManager : MonoBehaviour
         if (lives > 0)
         {
             ShowRespawnUI();
+            UIrespawnText.text = "You can still be born again.";
         }
         else
         {
             ShowRespawnUI();
+            UIrespawnText.text = "You can't be born again.";
             lives = 0;
         }
         UpdateUI();

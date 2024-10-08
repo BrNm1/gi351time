@@ -9,6 +9,7 @@ public class Win : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Time.timeScale = 0;
             SceneManager.LoadSceneAsync(3);
         }
     }
